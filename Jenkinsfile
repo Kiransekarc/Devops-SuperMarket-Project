@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/Kiransekarc/Devops-SuperMarket-Project.git'
+                git branch: 'main', url: 'https://github.com/Kiransekarc/Devops-SuperMarket-Project.git'
             }
         }
 

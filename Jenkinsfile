@@ -11,14 +11,14 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh '/usr/local/bin/docker compose build'
+                sh 'docker-compose build'
             }
         }
 
         stage('Run Containers') {
             steps {
-                sh '/usr/local/bin/docker compose down || true'
-                sh '/usr/local/bin/docker compose up -d'
+                sh 'docker-compose down || true'
+                sh 'docker-compose up -d'
             }
         }
 

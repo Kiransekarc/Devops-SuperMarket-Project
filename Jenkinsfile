@@ -11,15 +11,15 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t supermarket-app ./backend'
+                sh '/usr/local/bin/docker build -t supermarket-app ./backend'
             }
         }
 
         stage('Run Container') {
             steps {
-                sh 'docker stop supermarket-app || true'
-                sh 'docker rm supermarket-app || true'
-                sh 'docker run -d -p 5000:5000 --name supermarket-app supermarket-app'
+                sh '/usr/local/bin/docker stop supermarket-app || true'
+                sh '/usr/local/bin/docker rm supermarket-app || true'
+                sh '/usr/local/bin/docker run -d -p 5000:5000 --name supermarket-app supermarket-app'
             }
         }
 

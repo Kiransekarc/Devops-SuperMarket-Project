@@ -17,7 +17,9 @@ pipeline {
 
         stage('Run Containers') {
             steps {
-                sh 'docker-compose down || true'
+                sh 'docker-compose down --remove-orphans || true'
+                sh 'docker stop supermarket-backend supermarket-frontend || true'
+                sh 'docker rm -f supermarket-backend supermarket-frontend || true'
                 sh 'docker-compose up -d'
             }
         }

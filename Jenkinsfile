@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_TAG = "build-${BUILD_NUMBER}"
+    }
+
     stages {
 
         stage('Clone Repo') {
@@ -11,7 +15,9 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose build'
+                sh "docker-compose build"
+                sh "docker tag supermarket-pipeline-frontend:latest supermarket-pipeline-frontend:${IMAGE_TAG}"
+                sh "docker tag supermarket-pipeline-backend:latest supermarket-pipeline-backend:${IMAGE_TAG}"
             }
         }
 
@@ -26,10 +32,10 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'minikube image load supermarket-pipeline-frontend:latest || true'
-                sh 'minikube image load supermarket-pipeline-backend:latest || true'
-                sh 'kubectl rollout restart deployment supermarket-frontend || true'
-                sh 'kubectl rollout restart deployment supermarket-backend || true'
+                sh "minikube image load supermarket-pipeline-frontend:${IMAGE_TAG} || true"
+                sh "minikube image load supermarket-pipeline-backend:${IMAGE_TAG} || true"
+                sh "kubectl set image deployment/supermarket-frontend frontend=supermarket-pipeline-frontend:${IMAGE_TAG} || true"
+                sh "kubectl set image deployment/supermarket-backend backend=supermarket-pipeline-backend:${IMAGE_TAG} || true"
             }
         }
 

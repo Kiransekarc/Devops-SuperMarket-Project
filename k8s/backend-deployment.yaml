@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: supermarket-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: supermarket-backend
+  template:
+    metadata:
+      labels:
+        app: supermarket-backend
+    spec:
+      containers:
+      - name: backend
+        image: supermarket-pipeline-backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGO_URI
+          value: "mongodb+srv://admin:admin@supermarketcluster.0cdcsoq.mongodb.net/supermarketDB?retryWrites=true&w=majority&appName=SuperMarketCluster"
+        - name: JWT_SECRET
+          value: "your_super_secret_jwt_key_here_change_in_production"
+        - name: PORT
+          value: "5000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: supermarket-backend
+spec:
+  selector:
+    app: supermarket-backend
+  ports:
+  - port: 5000
+    targetPort: 5000
+  type: ClusterIP

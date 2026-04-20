@@ -24,5 +24,14 @@ pipeline {
             }
         }
 
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'minikube image load supermarket-pipeline-frontend:latest || true'
+                sh 'minikube image load supermarket-pipeline-backend:latest || true'
+                sh 'kubectl rollout restart deployment supermarket-frontend || true'
+                sh 'kubectl rollout restart deployment supermarket-backend || true'
+            }
+        }
+
     }
 }

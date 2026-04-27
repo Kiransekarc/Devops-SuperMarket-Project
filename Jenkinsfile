@@ -23,7 +23,8 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh "docker-compose build"
+                sh "docker-compose build --no-cache frontend"
+                sh "docker-compose build backend"
                 sh "docker tag supermarket-pipeline-frontend:latest supermarket-pipeline-frontend:${IMAGE_TAG}"
                 sh "docker tag supermarket-pipeline-backend:latest supermarket-pipeline-backend:${IMAGE_TAG}"
             }

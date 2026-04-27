@@ -7,10 +7,10 @@ pipeline {
 
     environment {
         IMAGE_TAG = "build-${BUILD_NUMBER}"
-        AWS_REGION = "us-east-1"
+        AWS_REGION = "ap-south-1"
         AWS_ACCOUNT_ID = "455440592648"
-        ECR_BACKEND = "455440592648.dkr.ecr.us-east-1.amazonaws.com/supermarket-backend"
-        ECR_FRONTEND = "455440592648.dkr.ecr.us-east-1.amazonaws.com/supermarket-frontend"
+        ECR_BACKEND = "455440592648.dkr.ecr.ap-south-1.amazonaws.com/supermarket-backend"
+        ECR_FRONTEND = "455440592648.dkr.ecr.ap-south-1.amazonaws.com/supermarket-frontend"
     }
 
     stages {

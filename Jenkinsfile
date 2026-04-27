@@ -64,12 +64,27 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Deploy to EC2') {
             steps {
-                sh "minikube image load supermarket-pipeline-frontend:${IMAGE_TAG} || true"
-                sh "minikube image load supermarket-pipeline-backend:${IMAGE_TAG} || true"
-                sh "kubectl set image deployment/supermarket-frontend frontend=supermarket-pipeline-frontend:${IMAGE_TAG} || true"
-                sh "kubectl set image deployment/supermarket-backend backend=supermarket-pipeline-backend:${IMAGE_TAG} || true"
+                withCredentials([string(credentialsId: 'AWS Secret Key', variable: 'AWS_SECRET_ACCESS_KEY'),
+                                 string(credentialsId: 'AWS Access Key', variable: 'AWS_ACCESS_KEY_ID')]) {
+                    sshagent(['ec2-ssh-key']) {
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ubuntu@13.232.107.25 '
+                                aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+                                aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+                                aws configure set default.region ap-south-1
+                                aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 455440592648.dkr.ecr.ap-south-1.amazonaws.com
+                                docker pull 455440592648.dkr.ecr.ap-south-1.amazonaws.com/supermarket-backend:latest
+                                docker pull 455440592648.dkr.ecr.ap-south-1.amazonaws.com/supermarket-frontend:latest
+                                docker rm -f supermarket-backend supermarket-frontend || true
+                                docker network create supermarket-net || true
+                                docker run -d --name supermarket-backend --network supermarket-net -p 5000:5000 -e MONGO_URI="mongodb+srv://admin:admin@supermarketcluster.0cdcsoq.mongodb.net/supermarketDB?retryWrites=true&w=majority&appName=SuperMarketCluster" -e JWT_SECRET="your_super_secret_jwt_key_here_change_in_production" -e PORT=5000 455440592648.dkr.ecr.ap-south-1.amazonaws.com/supermarket-backend:latest
+                                docker run -d --name supermarket-frontend --network supermarket-net -p 3000:3000 455440592648.dkr.ecr.ap-south-1.amazonaws.com/supermarket-frontend:latest
+                            '
+                        """
+                    }
+                }
             }
         }
 

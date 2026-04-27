@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+ENV REACT_APP_API_URL=http://13.232.107.25:5000/api
+
 RUN npm run build
 
 FROM nginx:alpine

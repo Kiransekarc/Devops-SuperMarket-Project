@@ -7,7 +7,7 @@ import { getAuthItem } from "../utils/authStorage";
  * - Prevents duplicate bugs
  */
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:5000/api"
+  baseURL: process.env.REACT_APP_API_URL || "http://13.232.107.25:5000/api"
 });
 
 /**

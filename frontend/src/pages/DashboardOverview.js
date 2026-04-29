@@ -138,7 +138,9 @@ const DashboardOverview = ({ products, analytics }) => {
       } else if (error.code === 'ECONNABORTED') {
         toast.error("Request timeout. Check if backend is running.");
       } else if (error.code === 'ERR_NETWORK') {
-        toast.error("Cannot connect to server. Is backend running on port 5000?");
+        // silently handle network error
+        setLoading(false);
+        return;
       } else {
         toast.error(`Error: ${error.response?.data?.error || error.message}`);
       }

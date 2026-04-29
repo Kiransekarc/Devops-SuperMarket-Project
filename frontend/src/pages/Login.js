@@ -125,7 +125,7 @@ const Login = () => {
 
             {/* Footer */}
             <div className="login-footer">
-              Manage smarter. Sell better. vnew
+              Manage smarter. Sell better. vben
             </div>
           </div>
         </div>

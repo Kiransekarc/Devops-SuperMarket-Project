@@ -125,7 +125,7 @@ const Login = () => {
 
             {/* Footer */}
             <div className="login-footer">
-              Manage smarter. Sell better. vbenyy
+              Manage smarter. Sell better. vb
             </div>
           </div>
         </div>

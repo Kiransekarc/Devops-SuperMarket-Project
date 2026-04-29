@@ -9,7 +9,7 @@ const Footer = () => {
                 <div className="footer-grid">
                     <div className="footer-col">
                         <h4>SUPERMARKET SAS</h4>
-                        <p>The premier platform for modern retail and daily operations.</p>
+                        <p>The premier platform for modern retail and daily operation.</p>
                         <div className="social-icons">
                             <a href="#instagram"><i className="fab fa-instagram"></i></a>
                             <a href="#facebook"><i className="fab fa-facebook-f"></i></a>
